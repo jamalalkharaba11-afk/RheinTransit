@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}Angebot berechnen – RheinTransit{% endblock %}
+{% block content %}<main class="quote-page"><div class="quote-head"><p class="eyebrow">PREISRECHNER</p><h1>Ihr unverbindliches Angebot</h1><p>Füllen Sie die Angaben aus. Der Preis wird sofort geschätzt.</p></div>
+<form method="post" id="quoteForm" class="quote-grid">
+<div class="formbox">
+<h2>1. Leistung</h2><label>Service<select name="service" id="service"><option value="umzug">Umzug</option><option value="transport">Transport</option><option value="reinigung">Reinigung</option><option value="entruempelung">Entrümpelung</option></select></label>
+<div class="two"><label>Anzahl Zimmer<input name="rooms" id="rooms" type="number" min="1" value="2"></label><label>Entfernung (km)<input name="distance" id="distance" type="number" min="0" value="10"></label></div>
+<div class="two"><label>Etage<input name="floor" id="floor" type="number" min="0" value="0"></label><label>Aufzug<select name="elevator" id="elevator"><option>Ja</option><option>Nein</option></select></label></div>
+<h2>2. Extras</h2><label class="check"><input type="checkbox" name="extras" value="abbau"> Möbelabbau (+55 €)</label>
+<label class="check"><input type="checkbox" name="extras" value="aufbau"> Möbelaufbau (+65 €)</label>
+<label class="check"><input type="checkbox" name="extras" value="verpackung"> Verpackungshilfe (+40 €)</label>
+<h2>3. Ihre Daten</h2>
+<div class="two"><label>Name *<input name="name" required></label><label>E-Mail *<input name="email" type="email" required></label></div>
+<div class="two"><label>Telefon<input name="phone"></label><label>Wunschtermin<input name="date" type="date"></label></div>
+<label>Nachricht<textarea name="message" rows="4" placeholder="Weitere Informationen..."></textarea></label>
+<button class="cta submit" type="submit">Angebot anfordern →</button>
+</div>
+<aside class="pricebox"><span>Geschätzter Preis</span><strong id="price">— €</strong><small>Unverbindliche Schätzung</small><hr><p>✓ Keine versteckten Kosten</p><p>✓ Schnelle Rückmeldung</p><p>✓ Persönliche Beratung</p></aside>
+</form></main>{% endblock %}

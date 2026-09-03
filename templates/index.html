@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}RheinTransit | Umzug, Transport & Reinigung in Duisburg{% endblock %}
+{% block description %}RheinTransit in Duisburg: Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung. Jetzt unverbindlich anfragen.{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <div class="badge">● Duisburg & Umgebung</div>
+    <h1>Ihr Umzug.<br><span>Unser Service.</span></h1>
+    <p>Professioneller Umzug, Transport, Wohnungsreinigung und Entrümpelung – zuverlässig und unkompliziert aus einer Hand.</p>
+    <div class="hero-actions">
+      <a class="cta" href="/angebot">Jetzt Preis berechnen →</a>
+      <a class="secondary" href="tel:+4993096881780">📞 Direkt anrufen</a>
+    </div>
+  </div>
+  <div class="hero-art"><img src="{{ url_for('static',filename='images/hero.svg') }}" alt="Umzug und Reinigung mit RheinTransit in Duisburg"></div>
+</section>
+
+<section class="section">
+  <p class="eyebrow">UNSERE LEISTUNGEN</p><h2>Alles für Ihren Umzug</h2>
+  <div class="cards">
+    <a class="card" href="/leistungen/umzug"><div class="icon">🚚</div><h3>Umzug Duisburg</h3><p>Privatumzug und Möbeltransport in Duisburg und Umgebung.</p></a>
+    <a class="card" href="/leistungen/transport"><div class="icon">📦</div><h3>Transport Duisburg</h3><p>Flexible Transporte für große und kleine Aufträge.</p></a>
+    <a class="card" href="/leistungen/reinigung"><div class="icon">🧹</div><h3>Wohnungsreinigung</h3><p>Gründliche Reinigung für Wohnung, Übergabe und Umzug.</p></a>
+    <a class="card" href="/leistungen/entruempelung"><div class="icon">♻️</div><h3>Entrümpelung</h3><p>Wir schaffen Platz und übernehmen den Abtransport.</p></a>
+  </div>
+</section>
+
+<section class="local">
+  <div><p class="eyebrow">REGION</p><h2>RheinTransit in Duisburg</h2><p>Unser Standort ist in Duisburg. Je nach Auftrag bieten wir unsere Leistungen auch in umliegenden Städten an. Fragen Sie Ihren gewünschten Einsatzort einfach an.</p></div>
+  <div class="cities"><span>Duisburg</span><span>Oberhausen</span><span>Moers</span><span>Mülheim</span><span>Essen</span><span>Krefeld</span><span>Düsseldorf</span></div>
+</section>
+
+<section class="band"><div><p class="eyebrow">SCHNELL & TRANSPARENT</p><h2>Was kostet Ihr Auftrag?</h2><p>Service auswählen, Angaben machen und sofort eine unverbindliche Schätzung erhalten.</p></div><a class="cta light" href="/angebot">Angebot starten</a></section>
+{% endblock %}

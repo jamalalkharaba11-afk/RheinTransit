@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Anfrage erhalten{% endblock %}{% block content %}
+<div class="success"><div class="success-icon">✓</div><h1>Vielen Dank, {{ name }}!</h1><p>Ihre Anfrage wurde erfolgreich übermittelt.</p><div class="result">Geschätzter Preis: <strong>{{ "%.2f"|format(price) }} €</strong></div><p>Wir melden uns so schnell wie möglich bei Ihnen.</p><a class="cta" href="/">Zur Startseite</a></div>{% endblock %}
