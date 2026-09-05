@@ -2,23 +2,49 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import sqlite3, os
 from datetime import datetime
 
+try:
+    import psycopg
+    from psycopg.rows import dict_row
+except ImportError:
+    psycopg = None
+
 app = Flask(__name__)
-app.secret_key = "change-this-secret-in-production"
+app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-in-production")
 DB = os.path.join(os.path.dirname(__file__), "rheintransit.db")
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 
 PRICES = {"umzug":120, "transport":80, "reinigung":70, "entruempelung":100}
+SERVICE_LABELS = {"umzug":"Umzug", "transport":"Transport", "reinigung":"Reinigung", "entruempelung":"Entrümpelung"}
+app.jinja_env.globals["SERVICE_LABELS"] = SERVICE_LABELS
+
 
 def db():
-    con=sqlite3.connect(DB); con.row_factory=sqlite3.Row; return con
+    if DATABASE_URL and psycopg:
+        url = DATABASE_URL
+        # Render may provide postgres:// on older services.
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        return psycopg.connect(url, row_factory=dict_row)
+    con = sqlite3.connect(DB)
+    con.row_factory = sqlite3.Row
+    return con
+
 
 def init_db():
-    con=db()
-    con.execute("""CREATE TABLE IF NOT EXISTS requests(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT NOT NULL,phone TEXT,
+    con = db()
+    pg = bool(DATABASE_URL and psycopg)
+    id_type = "SERIAL PRIMARY KEY" if pg else "INTEGER PRIMARY KEY AUTOINCREMENT"
+    text_now = "CURRENT_TIMESTAMP" if pg else "CURRENT_TIMESTAMP"
+    con.execute(f"""CREATE TABLE IF NOT EXISTS requests(
+      id {id_type},name TEXT NOT NULL,email TEXT NOT NULL,phone TEXT,
       service TEXT NOT NULL,rooms INTEGER DEFAULT 1,distance INTEGER DEFAULT 0,floor INTEGER DEFAULT 0,
       elevator TEXT DEFAULT 'Ja',extras TEXT,estimated_price REAL NOT NULL,date TEXT,message TEXT,
       status TEXT DEFAULT 'Neu',created_at TEXT NOT NULL)""")
+    con.execute(f"""CREATE TABLE IF NOT EXISTS reviews(
+      id {id_type}, name TEXT NOT NULL, service TEXT NOT NULL, rating INTEGER NOT NULL,
+      comment TEXT NOT NULL, status TEXT DEFAULT 'Neu', created_at TEXT NOT NULL)""")
     con.commit(); con.close()
+
 
 def calculate(service,rooms,distance,floor,elevator,extras):
     price=PRICES.get(service,100)
@@ -29,8 +55,38 @@ def calculate(service,rooms,distance,floor,elevator,extras):
     price+=sum({"abbau":55,"aufbau":65,"verpackung":40}.get(x,0) for x in extras)
     return round(price,2)
 
+
+def approved_reviews():
+    con=db()
+    rows=con.execute("SELECT * FROM reviews WHERE status='Freigegeben' ORDER BY id DESC").fetchall()
+    con.close()
+    return rows
+
+
+def review_stats():
+    con=db()
+    row=con.execute("SELECT COUNT(*) AS count, COALESCE(AVG(rating),0) AS avg FROM reviews WHERE status='Freigegeben'").fetchone()
+    con.close()
+    return {"count": int(row["count"]), "avg": round(float(row["avg"] or 0), 1)}
+
 @app.route("/")
-def index(): return render_template("index.html")
+def index():
+    return render_template("index.html", reviews=approved_reviews(), review_stats=review_stats())
+
+@app.post("/bewertung")
+def add_review():
+    name=request.form.get("name","").strip()
+    service=request.form.get("service","").strip()
+    comment=request.form.get("comment","").strip()
+    try: rating=int(request.form.get("rating","0"))
+    except ValueError: rating=0
+    if not name or not comment or service not in SERVICE_LABELS or rating not in range(1,6):
+        flash("Bitte Name, Leistung, Bewertung und Kommentar korrekt ausfüllen.")
+        return redirect(url_for("index") + "#bewertungen")
+    con=db(); con.execute("INSERT INTO reviews (name,service,rating,comment,status,created_at) VALUES (?,?,?,?,?,?)",
+        (name,service,rating,comment,"Neu",datetime.now().strftime("%Y-%m-%d %H:%M:%S"))); con.commit(); con.close()
+    flash("Vielen Dank! Ihre Bewertung wurde zur Prüfung eingereicht.")
+    return redirect(url_for("index") + "#bewertungen")
 
 @app.route("/angebot",methods=["GET","POST"])
 def quote():
@@ -59,33 +115,22 @@ def service_page(service):
     titles={"umzug":"Umzugsunternehmen in Duisburg | RheinTransit","transport":"Möbeltransport & Transport in Duisburg | RheinTransit",
             "reinigung":"Wohnungsreinigung in Duisburg | RheinTransit","entruempelung":"Entrümpelung in Duisburg | RheinTransit"}
     if service not in titles: return redirect(url_for("index"))
-    images={
-        "umzug":"https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=1200&q=85",
-        "transport":"https://unsplash.com/photos/HrnAxAUwle8/download?force=true",
-        "reinigung":"https://images.unsplash.com/photo-1581578949510-fa7315c4c350?auto=format&fit=crop&w=1200&q=85",
-        "entruempelung":"https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=1200&q=85"
-    }
+    images={"umzug":"/static/images/photos/moving.jpg","transport":"/static/images/photos/transport.jpg",
+            "reinigung":"/static/images/photos/cleaning.jpg","entruempelung":"/static/images/photos/decluttering.jpg"}
     return render_template("service.html",service=service,title=titles[service],service_image=images[service])
 
 @app.route("/einsatzgebiet")
-def service_area():
-    return render_template("service_area.html")
-
+def service_area(): return render_template("service_area.html")
 @app.route("/kontakt")
 def contact(): return render_template("contact.html")
-
 @app.route("/impressum")
 def impressum(): return render_template("impressum.html")
-
 @app.route("/datenschutz")
 def privacy(): return render_template("privacy.html")
 
 @app.route("/robots.txt")
 def robots():
-    r=f"""User-agent: *
-Allow: /
-Sitemap: {request.url_root.rstrip('/')}/sitemap.xml
-"""
+    r=f"""User-agent: *\nAllow: /\nSitemap: {request.url_root.rstrip('/')}/sitemap.xml\n"""
     return make_response(r,200,{"Content-Type":"text/plain"})
 
 @app.route("/sitemap.xml")
@@ -100,7 +145,7 @@ def sitemap():
 @app.route("/admin/login",methods=["GET","POST"])
 def login():
     if request.method=="POST":
-        if request.form.get("username")=="admin" and request.form.get("password")=="rhein2026":
+        if request.form.get("username")==os.environ.get("ADMIN_USER","admin") and request.form.get("password")==os.environ.get("ADMIN_PASSWORD","rhein2026"):
             session["admin"]=True; return redirect(url_for("dashboard"))
         flash("Benutzername oder Passwort falsch.")
     return render_template("admin/login.html")
@@ -108,18 +153,27 @@ def login():
 @app.route("/admin")
 def dashboard():
     if not session.get("admin"): return redirect(url_for("login"))
-    con=db(); rows=con.execute("SELECT * FROM requests ORDER BY id DESC").fetchall()
+    con=db(); rows=con.execute("SELECT * FROM requests ORDER BY id DESC").fetchall(); reviews=con.execute("SELECT * FROM reviews ORDER BY id DESC").fetchall()
     stats=(len(rows),sum(r["status"]=="Neu" for r in rows),sum(r["estimated_price"] for r in rows))
-    con.close(); return render_template("admin/dashboard.html",requests=rows,stats=stats)
+    review_pending=sum(r["status"]=="Neu" for r in reviews)
+    con.close(); return render_template("admin/dashboard.html",requests=rows,stats=stats,reviews=reviews,review_pending=review_pending)
 
 @app.post("/admin/status/<int:req_id>")
 def status(req_id):
     if not session.get("admin"): return redirect(url_for("login"))
-    con=db(); con.execute("UPDATE requests SET status=? WHERE id=?",(request.form["status"],req_id))
-    con.commit(); con.close(); return redirect(url_for("dashboard"))
+    con=db(); con.execute("UPDATE requests SET status=? WHERE id=?",(request.form["status"],req_id)); con.commit(); con.close(); return redirect(url_for("dashboard"))
+
+@app.post("/admin/review-status/<int:review_id>")
+def review_status(review_id):
+    if not session.get("admin"): return redirect(url_for("login"))
+    allowed={"Neu","Freigegeben","Abgelehnt"}; value=request.form.get("status")
+    if value not in allowed: value="Neu"
+    con=db(); con.execute("UPDATE reviews SET status=? WHERE id=?",(value,review_id)); con.commit(); con.close(); return redirect(url_for("dashboard")+"#bewertungen-admin")
 
 @app.route("/admin/logout")
 def logout(): session.clear(); return redirect(url_for("login"))
 
+init_db()
+
 if __name__=="__main__":
-    init_db(); app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT",5000)), debug=False)
