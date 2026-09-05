@@ -56,10 +56,20 @@ def api_calculate():
 
 @app.route("/leistungen/<service>")
 def service_page(service):
-    titles={"umzug":"Umzug in Duisburg","transport":"Transport in Duisburg",
-            "reinigung":"Wohnungsreinigung in Duisburg","entruempelung":"Entrümpelung in Duisburg"}
+    titles={"umzug":"Umzugsunternehmen in Duisburg | RheinTransit","transport":"Möbeltransport & Transport in Duisburg | RheinTransit",
+            "reinigung":"Wohnungsreinigung in Duisburg | RheinTransit","entruempelung":"Entrümpelung in Duisburg | RheinTransit"}
     if service not in titles: return redirect(url_for("index"))
-    return render_template("service.html",service=service,title=titles[service])
+    images={
+        "umzug":"https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=1200&q=85",
+        "transport":"https://unsplash.com/photos/HrnAxAUwle8/download?force=true",
+        "reinigung":"https://images.unsplash.com/photo-1581578949510-fa7315c4c350?auto=format&fit=crop&w=1200&q=85",
+        "entruempelung":"https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=1200&q=85"
+    }
+    return render_template("service.html",service=service,title=titles[service],service_image=images[service])
+
+@app.route("/einsatzgebiet")
+def service_area():
+    return render_template("service_area.html")
 
 @app.route("/kontakt")
 def contact(): return render_template("contact.html")
@@ -80,7 +90,7 @@ Sitemap: {request.url_root.rstrip('/')}/sitemap.xml
 
 @app.route("/sitemap.xml")
 def sitemap():
-    pages=["/","/angebot","/kontakt","/impressum","/datenschutz",
+    pages=["/","/angebot","/einsatzgebiet","/kontakt","/impressum","/datenschutz",
            "/leistungen/umzug","/leistungen/transport","/leistungen/reinigung","/leistungen/entruempelung"]
     xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
     for p in pages: xml+=f"<url><loc>{request.url_root.rstrip('/')}{p}</loc></url>"

@@ -1,33 +1,46 @@
 {% extends "base.html" %}
-{% block title %}RheinTransit | Umzug, Transport & Reinigung in Duisburg{% endblock %}
-{% block description %}RheinTransit in Duisburg: Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung. Jetzt unverbindlich anfragen.{% endblock %}
+{% block title %}RheinTransit | Umzugsunternehmen, Transport & Reinigung in Duisburg{% endblock %}
+{% block description %}RheinTransit ist Ihr Ansprechpartner für Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung. Jetzt unverbindlich anfragen.{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="hero-text">
     <div class="badge">● Duisburg & Umgebung</div>
     <h1>Ihr Umzug.<br><span>Unser Service.</span></h1>
-    <p>Professioneller Umzug, Transport, Wohnungsreinigung und Entrümpelung – zuverlässig und unkompliziert aus einer Hand.</p>
+    <p>Professioneller Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg – zuverlässig und unkompliziert aus einer Hand.</p>
     <div class="hero-actions">
       <a class="cta" href="/angebot">Jetzt Preis berechnen →</a>
       <a class="secondary" href="tel:+4993096881780">📞 Direkt anrufen</a>
     </div>
   </div>
-  <div class="hero-art"><img src="{{ url_for('static',filename='images/hero.svg') }}" alt="Umzug und Reinigung mit RheinTransit in Duisburg"></div>
-</section>
-
-<section class="section">
-  <p class="eyebrow">UNSERE LEISTUNGEN</p><h2>Alles für Ihren Umzug</h2>
-  <div class="cards">
-    <a class="card" href="/leistungen/umzug"><div class="icon">🚚</div><h3>Umzug Duisburg</h3><p>Privatumzug und Möbeltransport in Duisburg und Umgebung.</p></a>
-    <a class="card" href="/leistungen/transport"><div class="icon">📦</div><h3>Transport Duisburg</h3><p>Flexible Transporte für große und kleine Aufträge.</p></a>
-    <a class="card" href="/leistungen/reinigung"><div class="icon">🧹</div><h3>Wohnungsreinigung</h3><p>Gründliche Reinigung für Wohnung, Übergabe und Umzug.</p></a>
-    <a class="card" href="/leistungen/entruempelung"><div class="icon">♻️</div><h3>Entrümpelung</h3><p>Wir schaffen Platz und übernehmen den Abtransport.</p></a>
+  <div class="hero-art photo-frame">
+    <img src="https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=1200&q=85" alt="Umzugshelfer beim Transport von Möbeln in einen Umzugswagen" loading="eager">
+    <span class="photo-credit">Foto: Unsplash</span>
   </div>
 </section>
 
+<section class="section">
+  <p class="eyebrow">UNSERE LEISTUNGEN IN DUISBURG</p><h2>Umzug, Transport & Reinigung aus einer Hand</h2>
+  <p class="section-intro">Ob Privatumzug, Möbeltransport, Reinigung vor der Wohnungsübergabe oder Entrümpelung: RheinTransit unterstützt Kunden in Duisburg und auf Anfrage auch in den umliegenden Städten.</p>
+  <div class="cards">
+    <a class="card photo-card" href="/leistungen/umzug"><img src="https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=800&q=82" alt="Umzugshelfer beim Möbeltransport in Duisburg" loading="lazy"><div class="icon">🚚</div><h3>Umzugsunternehmen Duisburg</h3><p>Privatumzug, Möbeltransport und Unterstützung beim sicheren Transport von Kartons und Möbeln.</p></a>
+    <a class="card photo-card" href="/leistungen/transport"><img src="https://unsplash.com/photos/HrnAxAUwle8/download?force=true" alt="Möbeltransport und Transportservice in Duisburg" loading="lazy"><div class="icon">📦</div><h3>Möbeltransport Duisburg</h3><p>Flexible Transporte für einzelne Möbelstücke, Haushaltsgegenstände und größere Aufträge.</p></a>
+    <a class="card photo-card" href="/leistungen/reinigung"><img src="https://images.unsplash.com/photo-1581578949510-fa7315c4c350?auto=format&fit=crop&w=800&q=82" alt="Professionelle Wohnungsreinigung in Duisburg" loading="lazy"><div class="icon">🧹</div><h3>Wohnungsreinigung Duisburg</h3><p>Gründliche Reinigung für Wohnung, Umzug und Wohnungsübergabe.</p></a>
+    <a class="card photo-card" href="/leistungen/entruempelung"><img src="https://images.unsplash.com/photo-1714647211955-95c3104dc418?auto=format&fit=crop&w=800&q=82" alt="Entrümpelung und Abtransport von Möbeln in Duisburg" loading="lazy"><div class="icon">♻️</div><h3>Entrümpelung Duisburg</h3><p>Wir helfen beim Freimachen von Räumen und beim Abtransport nicht mehr benötigter Gegenstände.</p></a>
+  </div>
+</section>
+
+<section class="trust-strip"><div><strong>✓ Zuverlässig</strong><span>Persönliche Abstimmung</span></div><div><strong>✓ Transparent</strong><span>Unverbindliche Schätzung</span></div><div><strong>✓ Direkt erreichbar</strong><span>Telefon & WhatsApp</span></div></section>
+
 <section class="local">
-  <div><p class="eyebrow">REGION</p><h2>RheinTransit in Duisburg</h2><p>Unser Standort ist in Duisburg. Je nach Auftrag bieten wir unsere Leistungen auch in umliegenden Städten an. Fragen Sie Ihren gewünschten Einsatzort einfach an.</p></div>
-  <div class="cities"><span>Duisburg</span><span>Oberhausen</span><span>Moers</span><span>Mülheim</span><span>Essen</span><span>Krefeld</span><span>Düsseldorf</span><span>Mönchengladbach</span></div>
+  <div><p class="eyebrow">EINSATZGEBIET</p><h2>In Duisburg und Umgebung für Sie da</h2><p>RheinTransit sitzt in Duisburg und richtet seine Leistungen auf Kunden in der Stadt und im näheren Rheinland und Ruhrgebiet aus. Neben Duisburg können Einsätze in Moers, Oberhausen, Mülheim an der Ruhr, Essen, Krefeld und Düsseldorf nach Absprache möglich sein.</p><a class="secondary" href="/einsatzgebiet">Alle Einsatzgebiete ansehen →</a></div>
+  <div class="cities"><span>Duisburg</span><span>Moers</span><span>Oberhausen</span><span>Mülheim an der Ruhr</span><span>Essen</span><span>Krefeld</span><span>Düsseldorf</span></div>
+</section>
+
+<section class="section faq-section">
+  <p class="eyebrow">HÄUFIGE FRAGEN</p><h2>Umzug in Duisburg – häufig gefragt</h2>
+  <details><summary>Welche Leistungen bietet RheinTransit in Duisburg?</summary><p>Wir bieten Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung. Den konkreten Leistungsumfang stimmen wir individuell mit Ihnen ab.</p></details>
+  <details><summary>Fährt RheinTransit auch außerhalb von Duisburg?</summary><p>Ja, Einsätze außerhalb Duisburgs können nach Absprache möglich sein. Besonders die genannten Städte in der Umgebung können Sie bei Ihrer Anfrage angeben.</p></details>
+  <details><summary>Wie kann ich ein unverbindliches Angebot erhalten?</summary><p>Nutzen Sie unsere Online-Anfrage zur ersten Kostenschätzung oder kontaktieren Sie RheinTransit direkt telefonisch bzw. per WhatsApp.</p></details>
 </section>
 
 <section class="band"><div><p class="eyebrow">SCHNELL & TRANSPARENT</p><h2>Was kostet Ihr Auftrag?</h2><p>Service auswählen, Angaben machen und sofort eine unverbindliche Schätzung erhalten.</p></div><a class="cta light" href="/angebot">Angebot starten</a></section>

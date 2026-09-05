@@ -4,66 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 {% set site_url = request.url_root.rstrip('/') %}
-<title>{% block title %}RheinTransit – Umzug, Transport & Reinigung in Duisburg{% endblock %}</title>
-<meta name="description" content="{% block description %}RheinTransit in Duisburg: Umzug, Transport, Wohnungsreinigung und Entrümpelung. Unverbindliche Anfrage und schnelle Kontaktaufnahme.{% endblock %}">
-<meta name="robots" content="index,follow">
-<meta name="google-site-verification" content="w2tpe5SwsAT6CsXDGo8Yy_Gci-MliLIshO0cw8sNFaw" />
+<title>{% block title %}RheinTransit | Umzug, Transport & Reinigung in Duisburg{% endblock %}</title>
+<meta name="description" content="{% block description %}RheinTransit in Duisburg: Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung. Persönliche Anfrage für Duisburg und Umgebung.{% endblock %}">
+<meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="{{ site_url }}{{ request.path }}">
-<meta property="og:title" content="{% block ogtitle %}RheinTransit – Umzug & Service in Duisburg{% endblock %}">
-<meta property="og:description" content="Umzug, Transport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung.">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="RheinTransit">
+<meta property="og:title" content="{% block ogtitle %}RheinTransit | Umzug, Transport & Reinigung in Duisburg{% endblock %}">
+<meta property="og:description" content="Umzug, Möbeltransport, Reinigung und Entrümpelung in Duisburg und Umgebung.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ site_url }}{{ request.path }}">
+<meta property="og:image" content="{{ site_url }}{{ url_for('static', filename='images/hero.svg') }}">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"MovingCompany",
   "name":"RheinTransit",
-  "url":"{{ site_url }}",
-  "description":"Umzug, Transport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung.",
+  "url":"{{ site_url }}/",
+  "description":"Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung.",
   "telephone":"+4993096881780",
   "email":"bassem55alsaho@gmail.com",
   "founder":{"@type":"Person","name":"Bassem Alsaho"},
-  "address":{
-    "@type":"PostalAddress",
-    "streetAddress":"Bertastraße 9",
-    "postalCode":"47226",
-    "addressLocality":"Duisburg",
-    "addressCountry":"DE"
-  },
+  "address":{"@type":"PostalAddress","streetAddress":"Bertastraße 9","postalCode":"47226","addressLocality":"Duisburg","addressCountry":"DE"},
   "areaServed":[
-    {"@type":"City","name":"Duisburg"},
-    {"@type":"City","name":"Oberhausen"},
-    {"@type":"City","name":"Moers"},
-    {"@type":"City","name":"Mülheim an der Ruhr"},
-    {"@type":"City","name":"Essen"},
-    {"@type":"City","name":"Krefeld"},
-    {"@type":"City","name":"Düsseldorf"}
-    {"@type":"City","name":"Mönchengladbach"}
+    {"@type":"City","name":"Duisburg"},{"@type":"City","name":"Moers"},
+    {"@type":"City","name":"Oberhausen"},{"@type":"City","name":"Mülheim an der Ruhr"},
+    {"@type":"City","name":"Essen"},{"@type":"City","name":"Krefeld"},{"@type":"City","name":"Düsseldorf"}
   ],
-  "serviceType":["Umzug","Transport","Wohnungsreinigung","Entrümpelung"],
+  "serviceType":["Umzug","Möbeltransport","Wohnungsreinigung","Entrümpelung"],
   "sameAs":["https://wa.me/491632004834"]
 }
 </script>
 {% block head_extra %}{% endblock %}
 </head>
 <body>
-<header>
-  <a class="logo" href="/">Rhein<span>Umzug</span></a>
-  <nav>
+<header class="site-header">
+  <a class="logo" href="/" aria-label="RheinTransit Startseite">Rhein<span>Transit</span></a>
+  <button class="menu-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
+  <nav id="mainNav" aria-label="Hauptnavigation">
     <a href="/">Startseite</a>
     <a href="/leistungen/umzug">Umzug</a>
     <a href="/leistungen/transport">Transport</a>
     <a href="/leistungen/reinigung">Reinigung</a>
     <a href="/leistungen/entruempelung">Entrümpelung</a>
+    <a href="/einsatzgebiet">Einsatzgebiet</a>
     <a href="/kontakt">Kontakt</a>
+    <a class="mobile-nav-cta" href="/angebot">Kosten berechnen</a>
   </nav>
   <a class="navbtn" href="/angebot">Kosten berechnen</a>
 </header>
 {% block content %}{% endblock %}
 <footer>
   <div><strong>RheinTransit</strong><p>Umzug · Transport · Reinigung · Entrümpelung</p><p>Duisburg & Umgebung</p></div>
-  <div class="footer-links"><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></div>
+  <div class="footer-links"><a href="/einsatzgebiet">Einsatzgebiet</a> · <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></div>
 </footer>
 <div class="floating-contact">
   <a href="tel:+4993096881780" aria-label="RheinTransit anrufen">📞</a>

@@ -1,20 +1,26 @@
-# RheinTransit V3 – Duisburg
+# RheinTransit V5 – Duisburg SEO
 
-Flask + SQLite website for RheinTransit, focused on Duisburg local SEO.
+Optimized for local search around Duisburg while keeping the existing responsive mobile navigation.
 
-## Company
-- Firma: RheinTransit
-- Inhaber: Bassem Alsaho
-- Adresse: Bertastraße 9, 47226 Duisburg
-- Telefon: +49 93096881780
-- WhatsApp: +49 1632004834
-- E-Mail: bassem55alsaho@gmail.com
+## SEO improvements
+- Stronger German titles and meta descriptions for the homepage and service pages.
+- Canonical URLs, Open Graph metadata and large-image preview robots directive.
+- LocalBusiness/MovingCompany structured data with Duisburg address and service areas.
+- Dedicated, useful **Einsatzgebiet** page for Duisburg and nearby cities.
+- Natural references to relevant Duisburg districts without creating thin doorway pages.
+- FAQ content on the homepage.
+- Service structured data on each service page.
+- Sitemap updated to include `/einsatzgebiet`.
+- Existing mobile Hamburger navigation retained.
 
-## Features
-- Local SEO for Umzug Duisburg, Transport Duisburg, Wohnungsreinigung Duisburg, Entrümpelung Duisburg
-- LocalBusiness / MovingCompany structured data
-- sitemap.xml and robots.txt
-- Kontakt, Impressum, Datenschutz
-- Direct phone and WhatsApp buttons
-- Service area around Duisburg
-- Quote request and admin area
+## Main local targets
+Duisburg, Moers, Oberhausen, Mülheim an der Ruhr, Essen, Krefeld and Düsseldorf, plus Duisburg districts such as Rheinhausen, Neudorf, Hochfeld, Hamborn, Meiderich, Homberg, Walsum, Buchholz and Wanheimerort.
+
+## Important
+- Verify the legal business information in Impressum/Datenschutz before production.
+- Replace the Flask secret key before deployment.
+- In Google Search Console, submit `/sitemap.xml` after the live domain is configured.
+- Create/verify the Google Business Profile and keep the business name, address, phone and website consistent across the profile and website.
+- Do not create fake reviews or unsupported claims about service areas.
+
+Images are from Unsplash and are loaded from their public image URLs.
