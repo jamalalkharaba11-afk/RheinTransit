@@ -1,6 +1,14 @@
 {% extends "base.html" %}
-{% block title %}RheinTransit | Umzugsunternehmen, Transport & Reinigung in Duisburg{% endblock %}
-{% block description %}RheinTransit ist Ihr Ansprechpartner für Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung. Jetzt unverbindlich anfragen.{% endblock %}
+{% block title %}RheinTransit | Umzugsunternehmen, Transport & Reinigung in Duisburg<script>
+const buttons=document.querySelectorAll('.star-button'); const hidden=document.getElementById('rating-value'); const label=document.getElementById('rating-label');
+buttons.forEach(b=>b.addEventListener('click',()=>{const r=Number(b.dataset.rating); hidden.value=r; label.textContent=r+' von 5 Sternen'; buttons.forEach(x=>x.classList.toggle('selected',Number(x.dataset.rating)<=r));}));
+</script>
+{% endblock %}
+{% block description %}RheinTransit ist Ihr Ansprechpartner für Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg und Umgebung. Jetzt unverbindlich anfragen.<script>
+const buttons=document.querySelectorAll('.star-button'); const hidden=document.getElementById('rating-value'); const label=document.getElementById('rating-label');
+buttons.forEach(b=>b.addEventListener('click',()=>{const r=Number(b.dataset.rating); hidden.value=r; label.textContent=r+' von 5 Sternen'; buttons.forEach(x=>x.classList.toggle('selected',Number(x.dataset.rating)<=r));}));
+</script>
+{% endblock %}
 {% block content %}
 <section class="hero">
   <div class="hero-text">
@@ -9,7 +17,7 @@
     <p>Professioneller Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung in Duisburg – zuverlässig und unkompliziert aus einer Hand.</p>
     <div class="hero-actions">
       <a class="cta" href="/angebot">Jetzt Preis berechnen →</a>
-      <a class="secondary" href="tel:+4993096881780">📞 Direkt anrufen</a>
+      <a class="secondary" href="tel:+491789309688">📞 Direkt anrufen</a>
     </div>
   </div>
   <div class="hero-art photo-frame">
@@ -36,6 +44,33 @@
   <div class="cities"><span>Duisburg</span><span>Moers</span><span>Oberhausen</span><span>Mülheim an der Ruhr</span><span>Essen</span><span>Krefeld</span><span>Düsseldorf</span></div>
 </section>
 
+<section class="section reviews-section" id="bewertungen">
+  <div class="reviews-head">
+    <div><p class="eyebrow">KUNDENBEWERTUNGEN</p><h2>Was unsere Kunden sagen</h2>
+      <p class="section-intro">Nach einem Umzug, Transport, einer Reinigung oder Entrümpelung können Sie Ihre Erfahrung mit RheinTransit teilen.</p></div>
+    <div class="rating-summary"><strong>{{ "%.1f"|format(review_average) }} ★</strong><span>{{ review_count }} Bewertungen</span></div>
+  </div>
+  <div class="review-grid">
+    {% for review in reviews %}<article class="review-card"><div class="stars">{{ "★" * review.rating }}{{ "☆" * (5-review.rating) }}</div><h3>{{ review.name }}</h3><small>{{ {"umzug":"Umzug","transport":"Transport","reinigung":"Reinigung","entruempelung":"Entrümpelung"}.get(review.service, review.service) }}</small><p>{{ review.comment }}</p></article>
+    {% else %}<article class="review-card"><p>Noch keine veröffentlichten Bewertungen. Seien Sie der erste Kunde!</p></article>{% endfor %}
+  </div>
+</section>
+
+<section class="section review-form-section" id="bewertung">
+  <p class="eyebrow">IHRE ERFAHRUNG</p><h2>RheinTransit bewerten</h2>
+  <form class="review-form" method="post" action="/bewertung">
+    <div class="form-row"><label>Name<input name="name" maxlength="160" required></label><label>Leistung<select name="service" required><option value="">Bitte auswählen</option><option value="umzug">Umzug</option><option value="transport">Transport</option><option value="reinigung">Reinigung</option><option value="entruempelung">Entrümpelung</option></select></label></div>
+    <label>Ihre Bewertung <span id="rating-label">Bitte Sterne auswählen</span>
+      <div class="star-picker" aria-label="Bewertung von 1 bis 5 Sternen">
+        {% for n in range(1,6) %}<button type="button" class="star-button" data-rating="{{ n }}" aria-label="{{ n }} Sterne">★</button>{% endfor %}
+      </div><input type="hidden" name="rating" id="rating-value" value="" required>
+    </label>
+    <label>Kommentar<textarea name="comment" rows="5" maxlength="2000" required placeholder="Wie war Ihre Erfahrung mit RheinTransit?"></textarea></label>
+    <button class="cta" type="submit">Bewertung absenden →</button>
+    <p class="form-note">Ihre Bewertung wird vor der Veröffentlichung kurz geprüft.</p>
+  </form>
+</section>
+
 <section class="section faq-section">
   <p class="eyebrow">HÄUFIGE FRAGEN</p><h2>Umzug in Duisburg – häufig gefragt</h2>
   <details><summary>Welche Leistungen bietet RheinTransit in Duisburg?</summary><p>Wir bieten Umzug, Möbeltransport, Wohnungsreinigung und Entrümpelung. Den konkreten Leistungsumfang stimmen wir individuell mit Ihnen ab.</p></details>
@@ -43,32 +78,9 @@
   <details><summary>Wie kann ich ein unverbindliches Angebot erhalten?</summary><p>Nutzen Sie unsere Online-Anfrage zur ersten Kostenschätzung oder kontaktieren Sie RheinTransit direkt telefonisch bzw. per WhatsApp.</p></details>
 </section>
 
-<section class="section reviews-section" id="bewertungen">
-  <div class="reviews-head">
-    <div><p class="eyebrow">KUNDENBEWERTUNGEN</p><h2>Was unsere Kunden sagen</h2></div>
-    <div class="rating-summary"><strong>{{ "%.1f"|format(review_stats.avg) }} ★</strong><span>{{ review_stats.count }} Bewertungen</span></div>
-  </div>
-  {% with messages = get_flashed_messages() %}{% if messages %}<div class="flash">{{ messages[0] }}</div>{% endif %}{% endwith %}
-  <div class="reviews-grid">
-    <div class="review-list">
-      {% for r in reviews %}
-      <article class="review-card"><div class="review-top"><strong>{{ r.name }}</strong><span class="stars">{{ "★" * r.rating }}{{ "☆" * (5-r.rating) }}</span></div><div class="review-service">{{ SERVICE_LABELS.get(r.service, r.service|capitalize) if SERVICE_LABELS is defined else r.service|capitalize }}</div><p>{{ r.comment }}</p></article>
-      {% else %}<div class="review-card"><p>Noch keine Bewertungen. Seien Sie der erste Kunde!</p></div>{% endfor %}
-    </div>
-    <form class="review-form" method="post" action="/bewertung">
-      <h3>Ihre Erfahrung teilen</h3>
-      <label>Name<input name="name" required maxlength="80" placeholder="Ihr Name"></label>
-      <label>Leistung<select name="service" required><option value="">Bitte wählen</option><option value="umzug">Umzug</option><option value="transport">Transport</option><option value="reinigung">Reinigung</option><option value="entruempelung">Entrümpelung</option></select></label>
-      <label>Ihre Bewertung</label>
-      <div class="star-picker" aria-label="Bewertung auswählen">
-        {% for n in range(5,0,-1) %}<input type="radio" id="star{{n}}" name="rating" value="{{n}}" required><label for="star{{n}}">★</label>{% endfor %}
-      </div>
-      <label>Kommentar<textarea name="comment" required maxlength="1000" rows="5" placeholder="Wie war unser Service?"></textarea></label>
-      <button class="cta" type="submit">Bewertung absenden</button>
-      <small>Ihre Bewertung wird vor der Veröffentlichung kurz geprüft.</small>
-    </form>
-  </div>
-</section>
-
 <section class="band"><div><p class="eyebrow">SCHNELL & TRANSPARENT</p><h2>Was kostet Ihr Auftrag?</h2><p>Service auswählen, Angaben machen und sofort eine unverbindliche Schätzung erhalten.</p></div><a class="cta light" href="/angebot">Angebot starten</a></section>
+<script>
+const buttons=document.querySelectorAll('.star-button'); const hidden=document.getElementById('rating-value'); const label=document.getElementById('rating-label');
+buttons.forEach(b=>b.addEventListener('click',()=>{const r=Number(b.dataset.rating); hidden.value=r; label.textContent=r+' von 5 Sternen'; buttons.forEach(x=>x.classList.toggle('selected',Number(x.dataset.rating)<=r));}));
+</script>
 {% endblock %}

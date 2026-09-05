@@ -1,16 +1,17 @@
-# RheinTransit V5 – PostgreSQL Bewertungen
+# RheinTransit V5 – Persistent Reviews on Render
 
-## Render dauerhaft einrichten
-1. In Render ein **PostgreSQL**-Datenbank-Produkt anlegen.
-2. Beim Web Service unter **Environment** die Variable `DATABASE_URL` mit der **Internal Database URL** der Render-PostgreSQL-Datenbank verbinden.
-3. Zusätzlich setzen:
-   - `SECRET_KEY` = langer zufälliger Wert
-   - `ADMIN_USER` = gewünschter Admin-Benutzer
-   - `ADMIN_PASSWORD` = starkes Admin-Passwort
-4. Build Command: `pip install -r requirements.txt`
-5. Start Command: `gunicorn app:app`
+This version uses **Render PostgreSQL** when `DATABASE_URL` is configured. Local development automatically falls back to SQLite.
 
-Beim Start erstellt die Anwendung die Tabellen `requests` und `reviews` automatisch. Wenn `DATABASE_URL` gesetzt ist, werden die Daten in PostgreSQL gespeichert und bleiben bei Deployments/Restarts erhalten.
+## Render
+1. Create a Render Postgres database in the same region as the web service.
+2. Add the database connection string to the web service as `DATABASE_URL` (prefer the Internal Database URL).
+3. Add `SECRET_KEY`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD` as environment variables.
+4. Build command: `pip install -r requirements.txt`
+5. Start command: `gunicorn app:app`
 
-## Lokal
-Ohne `DATABASE_URL` fällt die Anwendung automatisch auf SQLite zurück.
+The app automatically creates the `requests` and `reviews` tables on startup.
+
+## Reviews
+Customers submit 1–5 stars, service and a comment. New reviews are saved with status `Neu` and do not appear publicly until an admin changes them to `Freigegeben`.
+
+Admin: `/admin`
