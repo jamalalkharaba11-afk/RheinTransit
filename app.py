@@ -218,8 +218,7 @@ def review_status(review_id):
 
 @app.route("/admin/logout")
 def logout(): session.clear(); return redirect(url_for("login"))
-with app.app_context():
-    db.create_all()
+
 
 init_db()
 
