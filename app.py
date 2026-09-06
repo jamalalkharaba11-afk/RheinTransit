@@ -112,7 +112,7 @@ def add_review():
     with engine.begin() as con:
         con.execute(reviews_table.insert().values(
             name=name, service=service, rating=rating, comment=comment,
-            status="Neu", created_at=datetime.now()
+            status="Freigegeben", created_at=datetime.now()
         ))
     flash("Vielen Dank! Ihre Bewertung wurde gespeichert und wird nach kurzer Prüfung veröffentlicht.")
     return redirect(url_for("index") + "#bewertungen")
