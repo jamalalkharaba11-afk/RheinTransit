@@ -52,19 +52,21 @@
     <a href="/leistungen/entruempelung">Entrümpelung</a>
     <a href="/einsatzgebiet">Einsatzgebiet</a>
     <a href="/kontakt">Kontakt</a>
-    <a href="/#bewertungen">Bewertung</a>
-    <a class="mobile-nav-cta" href="/angebot">Kosten berechnen</a>
+    <a class="review-nav-btn" href="{{ url_for('index') }}#bewertungen">⭐ Bewertung</a>
+    <a class="mobile-nav-cta" href="/angebot">Anfrage senden</a>
   </nav>
-  <a class="navbtn" href="/angebot">Kosten berechnen</a>
+  <a class="review-nav-btn desktop-review" href="{{ url_for('index') }}#bewertungen">⭐ Bewertung</a>
+  <a class="navbtn" href="/angebot">Anfrage senden</a>
 </header>
 {% block content %}{% endblock %}
 <footer>
-  <div><strong>RheinTransit</strong><p>Umzug · Transport · Reinigung · Entrümpelung</p><p>Duisburg & Umgebung</p></div>
+  <div><strong>RheinTransit</strong><p>Umzug · Schneller Transport · Reinigung · Entrümpelung · Logistik</p><p>Duisburg & Umgebung · 7 Tage die Woche für Sie da</p></div>
   <div class="footer-links"><a href="/einsatzgebiet">Einsatzgebiet</a> · <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></div>
 </footer>
 <div class="floating-contact">
   <a href="tel:+491789309688" aria-label="RheinTransit anrufen">📞</a>
   <a href="https://wa.me/491632004834" target="_blank" rel="noopener" aria-label="RheinTransit auf WhatsApp kontaktieren">💬</a>
+  <a href="mailto:bassem55alsaho@gmail.com" aria-label="RheinTransit per E-Mail kontaktieren">✉️</a>
 </div>
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>
 </body>

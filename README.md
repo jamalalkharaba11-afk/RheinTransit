@@ -15,3 +15,6 @@ The app automatically creates the `requests` and `reviews` tables on startup.
 Customers submit 1–5 stars, service and a comment. New reviews are saved with status `Neu` and do not appear publicly until an admin changes them to `Freigegeben`.
 
 Admin: `/admin`
+
+## Bilder
+Die Website verwendet echte Fotos von Unsplash und lädt sie direkt über HTTPS. Dadurch müssen die Fotodateien nicht im Repository liegen.

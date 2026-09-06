@@ -21,7 +21,7 @@ buttons.forEach(b=>b.addEventListener('click',()=>{const r=Number(b.dataset.rati
     </div>
   </div>
   <div class="hero-art photo-frame">
-    <img src="/static/images/photos/moving.jpg" alt="Umzugshelfer beim Transport von Möbeln in einen Umzugswagen" loading="eager">
+    <img src="https://images.unsplash.com/photo-1715645948484-da40dd56bc93?auto=format&fit=crop&fm=jpg&q=80&w=1400" alt="Umzugshelfer beim Transport von Möbeln in einen Umzugswagen" loading="eager">
     <span class="photo-credit">Foto: Unsplash</span>
   </div>
 </section>
@@ -30,10 +30,10 @@ buttons.forEach(b=>b.addEventListener('click',()=>{const r=Number(b.dataset.rati
   <p class="eyebrow">UNSERE LEISTUNGEN IN DUISBURG</p><h2>Umzug, Transport & Reinigung aus einer Hand</h2>
   <p class="section-intro">Ob Privatumzug, Möbeltransport, Reinigung vor der Wohnungsübergabe oder Entrümpelung: RheinTransit unterstützt Kunden in Duisburg und auf Anfrage auch in den umliegenden Städten.</p>
   <div class="cards">
-    <a class="card photo-card" href="/leistungen/umzug"><img src="/static/images/photos/moving.jpg" alt="Umzugshelfer beim Möbeltransport in Duisburg" loading="lazy"><div class="icon">🚚</div><h3>Umzugsunternehmen Duisburg</h3><p>Privatumzug, Möbeltransport und Unterstützung beim sicheren Transport von Kartons und Möbeln.</p></a>
-    <a class="card photo-card" href="/leistungen/transport"><img src="/static/images/photos/transport.jpg" alt="Möbeltransport und Transportservice in Duisburg" loading="lazy"><div class="icon">📦</div><h3>Möbeltransport Duisburg</h3><p>Flexible Transporte für einzelne Möbelstücke, Haushaltsgegenstände und größere Aufträge.</p></a>
-    <a class="card photo-card" href="/leistungen/reinigung"><img src="/static/images/photos/cleaning.jpg" alt="Professionelle Wohnungsreinigung in Duisburg" loading="lazy"><div class="icon">🧹</div><h3>Wohnungsreinigung Duisburg</h3><p>Gründliche Reinigung für Wohnung, Umzug und Wohnungsübergabe.</p></a>
-    <a class="card photo-card" href="/leistungen/entruempelung"><img src="/static/images/photos/decluttering.jpg" alt="Entrümpelung und Abtransport von Möbeln in Duisburg" loading="lazy"><div class="icon">♻️</div><h3>Entrümpelung Duisburg</h3><p>Wir helfen beim Freimachen von Räumen und beim Abtransport nicht mehr benötigter Gegenstände.</p></a>
+    <a class="card photo-card" href="/leistungen/umzug"><img src="https://images.unsplash.com/photo-1715645948484-da40dd56bc93?auto=format&fit=crop&fm=jpg&q=80&w=1400" alt="Umzugshelfer beim Möbeltransport in Duisburg" loading="lazy"><div class="icon">🚚</div><h3>Umzugsunternehmen Duisburg</h3><p>Privatumzug, Möbeltransport und Unterstützung beim sicheren Transport von Kartons und Möbeln.</p></a>
+    <a class="card photo-card" href="/leistungen/transport"><img src="https://images.unsplash.com/photo-1636543133032-e175f2adfe25?auto=format&fit=crop&fm=jpg&q=80&w=1400" alt="Möbeltransport und Transportservice in Duisburg" loading="lazy"><div class="icon">📦</div><h3>Möbeltransport Duisburg</h3><p>Flexible Transporte für einzelne Möbelstücke, Haushaltsgegenstände und größere Aufträge.</p></a>
+    <a class="card photo-card" href="/leistungen/reinigung"><img src="https://images.unsplash.com/photo-1581578949510-fa7315c4c350?auto=format&fit=crop&fm=jpg&q=80&w=1400" alt="Professionelle Wohnungsreinigung in Duisburg" loading="lazy"><div class="icon">🧹</div><h3>Wohnungsreinigung Duisburg</h3><p>Gründliche Reinigung für Wohnung, Umzug und Wohnungsübergabe.</p></a>
+    <a class="card photo-card" href="/leistungen/entruempelung"><img src="https://images.unsplash.com/photo-1771902875500-17e37622ad07?auto=format&fit=crop&fm=jpg&q=80&w=1400" alt="Entrümpelung und Abtransport von Möbeln in Duisburg" loading="lazy"><div class="icon">♻️</div><h3>Entrümpelung Duisburg</h3><p>Wir helfen beim Freimachen von Räumen und beim Abtransport nicht mehr benötigter Gegenstände.</p></a>
   </div>
 </section>
 
@@ -84,3 +84,37 @@ const buttons=document.querySelectorAll('.star-button'); const hidden=document.g
 buttons.forEach(b=>b.addEventListener('click',()=>{const r=Number(b.dataset.rating); hidden.value=r; label.textContent=r+' von 5 Sternen'; buttons.forEach(x=>x.classList.toggle('selected',Number(x.dataset.rating)<=r));}));
 </script>
 {% endblock %}
+
+
+<section class="services-extra">
+  <div class="section-head">
+    <p class="eyebrow">UNSERE WEITEREN LEISTUNGEN</p>
+    <h2>Mehr als nur ein Umzug</h2>
+    <p>Wir helfen zuverlässig, schnell und persönlich – auch bei besonderen Situationen.</p>
+  </div>
+  <div class="service-cards">
+    <article><h3>❤️ Hilfe für Senioren</h3><p>Ein Umzug im höheren Alter ist oft eine große Veränderung. Wir unterstützen Senioren einfühlsam, geduldig und zuverlässig – von der Planung bis zum Einrichten.</p></article>
+    <article><h3>⚡ Schneller Transport</h3><p>Wenn es schnell gehen muss: Wir übernehmen kurzfristige Transporte zuverlässig und sicher.</p></article>
+    <article><h3>🛋️ Entrümpelung & Möbelentsorgung</h3><p>Wir räumen Wohnungen, Keller und Räume und kümmern uns um den Abtransport und die fachgerechte Entsorgung.</p></article>
+    <article><h3>📦 Logistische Dienstleistungen</h3><p>Flexible Unterstützung bei Transport, Zwischenlagerung, Warenbewegungen und weiteren logistischen Aufgaben.</p></article>
+  </div>
+</section>
+
+
+<section class="home-inquiry" id="kontakt-anfrage">
+  <div class="section-head">
+    <p class="eyebrow">SCHNELL KONTAKT AUFNEHMEN</p>
+    <h2>Sie möchten uns etwas mitteilen?</h2>
+    <p>Senden Sie uns am Ende der Startseite Ihre Kontaktdaten und Ihr Anliegen. Wir melden uns persönlich.</p>
+  </div>
+  <form method="post" action="/angebot" class="home-inquiry-form">
+    <input type="hidden" name="service" value="umzug">
+    <div class="two">
+      <label>Name *<input name="name" required></label>
+      <label>E-Mail *<input name="email" type="email" required></label>
+    </div>
+    <label>Telefon<input name="phone" type="tel"></label>
+    <label>Ihre Nachricht *<textarea name="message" rows="6" required placeholder="Wie können wir Ihnen helfen?"></textarea></label>
+    <button class="cta submit" type="submit">✉️ Anfrage senden</button>
+  </form>
+</section>

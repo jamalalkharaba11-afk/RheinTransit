@@ -1,18 +1,57 @@
-{% extends "base.html" %}{% block title %}Angebot berechnen – RheinTransit{% endblock %}
-{% block content %}<main class="quote-page"><div class="quote-head"><p class="eyebrow">PREISRECHNER</p><h1>Ihr unverbindliches Angebot</h1><p>Füllen Sie die Angaben aus. Der Preis wird sofort geschätzt.</p></div>
-<form method="post" id="quoteForm" class="quote-grid">
-<div class="formbox">
-<h2>1. Leistung</h2><label>Service<select name="service" id="service"><option value="umzug">Umzug</option><option value="transport">Transport</option><option value="reinigung">Reinigung</option><option value="entruempelung">Entrümpelung</option></select></label>
-<div class="two"><label>Anzahl Zimmer<input name="rooms" id="rooms" type="number" min="1" value="2"></label><label>Entfernung (km)<input name="distance" id="distance" type="number" min="0" value="10"></label></div>
-<div class="two"><label>Etage<input name="floor" id="floor" type="number" min="0" value="0"></label><label>Aufzug<select name="elevator" id="elevator"><option>Ja</option><option>Nein</option></select></label></div>
-<h2>2. Extras</h2><label class="check"><input type="checkbox" name="extras" value="abbau"> Möbelabbau (+55 €)</label>
-<label class="check"><input type="checkbox" name="extras" value="aufbau"> Möbelaufbau (+65 €)</label>
-<label class="check"><input type="checkbox" name="extras" value="verpackung"> Verpackungshilfe (+40 €)</label>
-<h2>3. Ihre Daten</h2>
-<div class="two"><label>Name *<input name="name" required></label><label>E-Mail *<input name="email" type="email" required></label></div>
-<div class="two"><label>Telefon<input name="phone"></label><label>Wunschtermin<input name="date" type="date"></label></div>
-<label>Nachricht<textarea name="message" rows="4" placeholder="Weitere Informationen..."></textarea></label>
-<button class="cta submit" type="submit">Angebot anfordern →</button>
-</div>
-<aside class="pricebox"><span>Geschätzter Preis</span><strong id="price">— €</strong><small>Unverbindliche Schätzung</small><hr><p>✓ Keine versteckten Kosten</p><p>✓ Schnelle Rückmeldung</p><p>✓ Persönliche Beratung</p></aside>
-</form></main>{% endblock %}
+{% extends "base.html" %}
+{% block title %}Anfrage senden – RheinTransit{% endblock %}
+{% block description %}Senden Sie RheinTransit Ihre Anfrage für Umzug, Transport, Reinigung, Entrümpelung oder Logistik.{% endblock %}
+{% block content %}
+<main class="quote-page">
+  <div class="quote-head">
+    <p class="eyebrow">UNVERBINDLICHE ANFRAGE</p>
+    <h1>Ihre Anfrage an RheinTransit</h1>
+    <p>Kein automatischer Preisrechner. Senden Sie uns Ihre Kontaktdaten und die Details Ihres Auftrags – wir melden uns persönlich.</p>
+  </div>
+
+  <form method="post" class="quote-grid">
+    <div class="formbox">
+      <h2>Gewünschte Leistung</h2>
+      <label>Leistung *
+        <select name="service" required>
+          <option value="umzug">Umzug</option>
+          <option value="transport">Schneller Transport</option>
+          <option value="reinigung">Wohnungsreinigung</option>
+          <option value="entruempelung">Entrümpelung & Möbelentsorgung</option>
+        </select>
+      </label>
+
+      <h2>Ihre Kontaktdaten</h2>
+      <div class="two">
+        <label>Name *<input name="name" maxlength="160" required></label>
+        <label>E-Mail *<input name="email" type="email" required></label>
+      </div>
+      <label>Telefon<input name="phone" type="tel"></label>
+
+      <h2>Auftragsdetails</h2>
+      <div class="two">
+        <label>Wunschtermin<input name="date" type="date"></label>
+        <label>Abholadresse<input name="start_address" placeholder="Straße, PLZ, Ort"></label>
+      </div>
+      <label>Zieladresse<input name="destination" placeholder="Straße, PLZ, Ort"></label>
+      <label>Weitere Informationen<textarea name="message" rows="7" maxlength="5000" placeholder="Beschreiben Sie kurz Ihren Auftrag..."></textarea></label>
+
+      <button class="cta submit" type="submit">✉️ Anfrage senden</button>
+      <p class="form-note">Wir erstellen hier keinen automatischen Preis. Ihre Angaben werden als Anfrage gespeichert und – sobald der E-Mail-Versand eingerichtet ist – direkt an RheinTransit gesendet.</p>
+    </div>
+
+    <aside class="pricebox inquiry-box">
+      <span>Für Sie da</span>
+      <strong>7 Tage</strong>
+      <small>die Woche</small>
+      <hr>
+      <p>✓ Schnelle Rückmeldung</p>
+      <p>✓ Persönliche Beratung</p>
+      <p>✓ Kein automatisches Preisangebot</p>
+      <p>✓ Umzug & Transport</p>
+      <p>✓ Entrümpelung & Möbelentsorgung</p>
+      <p>✓ Logistische Dienstleistungen</p>
+    </aside>
+  </form>
+</main>
+{% endblock %}

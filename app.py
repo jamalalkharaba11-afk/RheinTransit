@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Text, Float, DateTime, select, update, func
 from datetime import datetime
 import os
+import smtplib
+from email.message import EmailMessage
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-in-production")
@@ -112,45 +114,121 @@ def add_review():
     with engine.begin() as con:
         con.execute(reviews_table.insert().values(
             name=name, service=service, rating=rating, comment=comment,
-            status="Freigegeben", created_at=datetime.now()
+            status="Neu", created_at=datetime.now()
         ))
     flash("Vielen Dank! Ihre Bewertung wurde gespeichert und wird nach kurzer Prüfung veröffentlicht.")
     return redirect(url_for("index") + "#bewertungen")
 
 
+
+def send_request_email(name, customer_email, phone, service, date, start_address, destination, message):
+    recipient = os.environ.get("CONTACT_EMAIL", "bassem55alsaho@gmail.com")
+    smtp_host = os.environ.get("SMTP_HOST", "").strip()
+    smtp_user = os.environ.get("SMTP_USERNAME", "").strip()
+    smtp_password = os.environ.get("SMTP_PASSWORD", "").strip()
+
+    if not (smtp_host and smtp_user and smtp_password):
+        return False
+
+    subject = f"Neue Anfrage von {name} – {SERVICE_LABELS.get(service, service)}"
+    body = f"""Neue Anfrage über die RheinTransit-Website
+
+Name: {name}
+E-Mail: {customer_email}
+Telefon: {phone or "—"}
+Leistung: {SERVICE_LABELS.get(service, service)}
+Wunschtermin: {date or "—"}
+Abholadresse: {start_address or "—"}
+Zieladresse: {destination or "—"}
+
+Weitere Informationen:
+{message or "—"}
+"""
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = smtp_user
+    msg["To"] = recipient
+    msg["Reply-To"] = customer_email
+    msg.set_content(body)
+
+    port = int(os.environ.get("SMTP_PORT", "587"))
+    with smtplib.SMTP(smtp_host, port, timeout=20) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+        server.send_message(msg)
+
+    return True
+
+
 @app.route("/angebot", methods=["GET", "POST"])
 def quote():
     if request.method == "POST":
-        name = request.form["name"].strip(); email = request.form["email"].strip()
-        service = request.form["service"]; rooms = int(request.form.get("rooms", 1))
-        distance = int(request.form.get("distance", 0)); floor = int(request.form.get("floor", 0))
-        elevator = request.form.get("elevator", "Ja"); extras = request.form.getlist("extras")
-        price = calculate(service, rooms, distance, floor, elevator, extras)
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        phone = request.form.get("phone", "").strip()
+        service = request.form.get("service", "umzug").strip()
+        date = request.form.get("date", "").strip()
+        start_address = request.form.get("start_address", "").strip()
+        destination = request.form.get("destination", "").strip()
+        message = request.form.get("message", "").strip()
+
+        if not name or not email or service not in SERVICE_LABELS:
+            flash("Bitte Name, E-Mail und Leistung korrekt ausfüllen.")
+            return redirect(url_for("quote"))
+
+        detail_text = (
+            f"Abholadresse: {start_address or '—'}\n"
+            f"Zieladresse: {destination or '—'}\n"
+            f"{message}"
+        )
+
         with engine.begin() as con:
             con.execute(requests_table.insert().values(
-                name=name, email=email, phone=request.form.get("phone", ""), service=service,
-                rooms=rooms, distance=distance, floor=floor, elevator=elevator,
-                extras=",".join(extras), estimated_price=price, date=request.form.get("date", ""),
-                message=request.form.get("message", ""), status="Neu", created_at=datetime.now()
+                name=name,
+                email=email,
+                phone=phone,
+                service=service,
+                rooms=1,
+                distance=0,
+                floor=0,
+                elevator="Ja",
+                extras="",
+                estimated_price=0,
+                date=date,
+                message=detail_text,
+                status="Neu",
+                created_at=datetime.now()
             ))
-        return render_template("success.html", name=name, price=price)
+
+        email_sent = False
+        try:
+            email_sent = send_request_email(
+                name, email, phone, service, date,
+                start_address, destination, message
+            )
+        except Exception as exc:
+            app.logger.warning("E-Mail-Versand fehlgeschlagen: %s", exc)
+
+        return render_template(
+            "success.html",
+            name=name,
+            email_sent=email_sent
+        )
+
     return render_template("quote.html")
-
-
-@app.post("/api/calculate")
-def api_calculate():
-    d = request.get_json() or {}
-    return jsonify(price=calculate(d.get("service", "umzug"), int(d.get("rooms", 1)), int(d.get("distance", 0)),
-                                  int(d.get("floor", 0)), d.get("elevator", "Ja"), d.get("extras", [])))
-
 
 @app.route("/leistungen/<service>")
 def service_page(service):
     titles = {"umzug": "Umzugsunternehmen in Duisburg | RheinTransit", "transport": "Möbeltransport & Transport in Duisburg | RheinTransit",
               "reinigung": "Wohnungsreinigung in Duisburg | RheinTransit", "entruempelung": "Entrümpelung in Duisburg | RheinTransit"}
     if service not in titles: return redirect(url_for("index"))
-    images = {"umzug": "/static/images/photos/moving.jpg", "transport": "/static/images/photos/transport.jpg",
-              "reinigung": "/static/images/photos/cleaning.jpg", "entruempelung": "/static/images/photos/decluttering.jpg"}
+    images = {
+        "umzug": "https://images.unsplash.com/photo-1715645948484-da40dd56bc93?auto=format&fit=crop&fm=jpg&q=80&w=1400",
+        "transport": "https://images.unsplash.com/photo-1636543133032-e175f2adfe25?auto=format&fit=crop&fm=jpg&q=80&w=1400",
+        "reinigung": "https://images.unsplash.com/photo-1581578949510-fa7315c4c350?auto=format&fit=crop&fm=jpg&q=80&w=1400",
+        "entruempelung": "https://images.unsplash.com/photo-1771902875500-17e37622ad07?auto=format&fit=crop&fm=jpg&q=80&w=1400"
+    }
     return render_template("service.html", service=service, title=titles[service], service_image=images[service])
 
 
